@@ -42,6 +42,9 @@ function App() {
           if (newState[data.correlationId].state == undefined) {
             newState[data.correlationId].state = ""
           }
+          if (newState[data.correlationId].prompt == undefined) {
+            newState[data.correlationId].prompt = data.prompt
+          }
           // @ts-ignore
           newState[data.correlationId].state = newState[data.correlationId].state + data.payload
           return newState
@@ -123,6 +126,9 @@ function App() {
               getAnswersAsRows().map(el => (
                 <Card>
                   <Card.Body>
+                    <Card.Header>
+                      {el.prompt}
+                    </Card.Header>
                     <Card.Text className="css-fix">
                       {el.state}
                     </Card.Text>

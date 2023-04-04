@@ -21,10 +21,10 @@ async def main():
             print("Received message " + str(message))
             m=json.loads(message)
             if (m["type"] == 'prompt'):
-                async def send_coroutine(payload, type, correlation_id):
-                    response = {"type": type, "payload": payload, "correlationId": correlation_id}
+                async def send_coroutine(prompt, payload, type, correlation_id):
+                    response = {"type": type, "payload": payload, "correlationId": correlation_id, "prompt": prompt}
                     await websocket.send(json.dumps(response))
-                callback = lambda x,u,w:message_loop.run_until_complete(send_coroutine(x,u,w))
+                callback = lambda x,u,w:message_loop.run_until_complete(send_coroutine(m["prompt"], x,u,w))
                 bot.prompt_callback(m["prompt"], callback = callback)
     print("Bot opened")
     async with serve(echo, host, port):
