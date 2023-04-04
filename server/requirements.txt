@@ -1,0 +1,4 @@
+nomic
+websockets
+loguru
+nest_asyncio
