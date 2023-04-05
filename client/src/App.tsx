@@ -88,7 +88,7 @@ function App() {
 
   return (
     <Container fluid className="mt-5">
-      <Row className='me-1'>
+      <Row className='me-1 mb-4'>
         <Col>
           <Form onSubmit={onSubmit}>
             <Form.Group controlId="promptGroup">
@@ -119,27 +119,35 @@ function App() {
           </Form>
         </Col>
       </Row>
-      <Row className='me-1'>
-        <Col>
-          <Table>
-            {
-              getAnswersAsRows().map(el => (
-                <Card>
-                  <Card.Body>
-                    <Card.Header>
-                      {el.prompt}
-                    </Card.Header>
-                    <Card.Text className="css-fix">
-                      {el.state}
-                    </Card.Text>
-                    <Button onClick={() => deleteRow(el.key)} type="button" variant="outline-primary">Delete</Button>
-                  </Card.Body>
-                </Card>
-              ))
-            }
-          </Table>
-        </Col>
-      </Row>
+      {
+        getAnswersAsRows().map(el => (
+          <Row className='me-1 mb-2'>
+            <Col>
+              <Card>
+                <Card.Body>
+                  <Card.Header>
+                    <Container>
+                      <Row fluid>
+                        <Col className='d-flex align-items-center'>
+                          <span className='cap'>Prompt:</span>&nbsp;<span className="sub">{el.prompt}</span>
+                        </Col>
+                        <Col md='2'>
+                          <ButtonGroup className="d-flex">
+                            <Button onClick={() => deleteRow(el.key)} type="button" variant="outline-primary">Delete</Button>
+                          </ButtonGroup>
+                        </Col>
+                      </Row>
+                    </Container>
+                  </Card.Header>
+                  <Card.Text className="css-fix">
+                    {el.state}
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        ))
+      }
     </Container >
   );
 }
