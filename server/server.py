@@ -1,8 +1,10 @@
 import asyncio
+import sys
 from websockets.server import serve
 import json
 from prompt_parser import GPT4AllWeb
 import nest_asyncio
+import uuid
 
 nest_asyncio.apply()
     
@@ -21,10 +23,13 @@ async def main():
             print("Received message " + str(message))
             m=json.loads(message)
             if (m["type"] == 'prompt'):
+                correlation_id=f'{uuid.uuid4()}'
                 async def send_coroutine(prompt, payload, type, correlation_id):
+                    sys.stdout.write(payload)
+                    sys.stdout.flush()
                     response = {"type": type, "payload": payload, "correlationId": correlation_id, "prompt": prompt}
                     await websocket.send(json.dumps(response))
-                callback = lambda x,u,w:message_loop.run_until_complete(send_coroutine(m["prompt"], x,u,w))
+                callback = lambda x:message_loop.run_until_complete(send_coroutine(m["prompt"], x, 'response', correlation_id))
                 bot.prompt_callback(m["prompt"], callback = callback)
     print("Bot opened")
     async with serve(echo, host, port):
