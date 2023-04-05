@@ -64,6 +64,10 @@ function App() {
     sendJsonMessage({ ...data, type: "prompt" })
   }
 
+  function stop() {
+    sendJsonMessage({ type: 'stop' })
+  }
+
   function clear() {
     setState(state => ({}))
   }
@@ -108,7 +112,7 @@ function App() {
                       <Button variant="secondary" type="button" onClick={clear}>
                         Clear
                       </Button>
-                      <Button variant="warning" type="button">
+                      <Button variant="warning" type="button" onClick={stop}>
                         Stop
                       </Button>
                     </ButtonGroup>
