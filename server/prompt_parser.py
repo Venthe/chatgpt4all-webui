@@ -11,6 +11,9 @@ except ImportError:
     pass
 
 class GPT4AllWeb(GPT4All):
+    def stop(self):
+        self._stop = True
+    
     def prompt_callback(self, prompt, callback, write_to_stdout = False):
         """
         Write a prompt to the bot and return the response.
@@ -23,6 +26,7 @@ class GPT4AllWeb(GPT4All):
         bot.stdin.write(prompt.encode('utf-8'))
         bot.stdin.write(b"\n")
         bot.stdin.flush()
+        self._stop = False
         return_value = self._parse_to_prompt_callback(callback, write_to_stdout)
         if not continuous_session:
             self.close()
@@ -36,7 +40,7 @@ class GPT4AllWeb(GPT4All):
         bot_says = ['']
         point = b''
         bot = self.bot
-        while True:
+        while not self._stop:
             point += bot.stdout.read(1)
             try:
                 character = point.decode("utf-8")
