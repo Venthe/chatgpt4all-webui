@@ -6,6 +6,15 @@
   height: 40vmin;
   pointer-events: none;
 }
+.sub {
+  color: #282c34;
+  font-style: italic;
+}
+
+.cap {
+  font-weight: bold;
+  text-transform: uppercase;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -32,6 +41,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
