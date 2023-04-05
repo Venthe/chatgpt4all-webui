@@ -1,5 +1,4 @@
 import sys
-import uuid
 from tqdm import tqdm
 from pathlib import Path
 from loguru import logger
@@ -34,8 +33,6 @@ class GPT4AllWeb(GPT4All):
         sys.stdout.flush()
 
     def _parse_to_prompt_callback(self, callback, write_to_stdout = True):
-        id=f'{uuid.uuid4()}'
-        callback("", "start", id)
         bot_says = ['']
         point = b''
         bot = self.bot
@@ -44,16 +41,13 @@ class GPT4AllWeb(GPT4All):
             try:
                 character = point.decode("utf-8")
                 if character == "\f": # We've replaced the delimiter character with this.
-                    callback("", "end", id)
                     return "\n".join(bot_says)
                 if character == "\n":
                     bot_says.append('')
-                    GPT4AllWeb.__print('\n')
-                    callback('\n', "response", id)
+                    callback('\n')
                 else:
                     bot_says[-1] += character
-                    GPT4AllWeb.__print(character)
-                    callback(character, "response", id)
+                    callback(character)
                 point = b''
 
             except UnicodeDecodeError:
